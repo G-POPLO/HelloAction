@@ -63,4 +63,46 @@ else:
     else:
         print("重复签到")
 
+
+res=s.post(url=url3,data=protect('{"csrf_token":"'+requests.utils.dict_from_cookiejar(tempcookie)['__csrf']+'"}'),headers=headers)
+object=json.loads(res.text,strict=False)
+for x in object['recommend']:
+    url='https://music.163.com/weapi/v3/playlist/detail?csrf_token='+requests.utils.dict_from_cookiejar(tempcookie)['__csrf']
+    data={
+        'id':x['id'],
+        'n':1000,
+        'csrf_token':requests.utils.dict_from_cookiejar(tempcookie)['__csrf'],
+    }
+    res=s.post(url,protect(json.dumps(data)),headers=headers)
+    object=json.loads(res.text,strict=False)
+    buffer=[]
+    count=0
+    for j in object['playlist']['trackIds']:
+        data2={}
+        data2["action"]="play"
+        data2["json"]={}
+        data2["json"]["download"]=0
+        data2["json"]["end"]="playend"
+        data2["json"]["id"]=j["id"]
+        data2["json"]["sourceId"]=""
+        data2["json"]["time"]="240"
+        data2["json"]["type"]="song"
+        data2["json"]["wifi"]=0
+        buffer.append(data2)
+        count+=1
+        if count>=310:
+            break
+    if count>=310:
+        break
+url = "http://music.163.com/weapi/feedback/weblog"
+postdata={
+    "logs":json.dumps(buffer)
+}
+res=s.post(url,protect(json.dumps(postdata)))
+object=json.loads(res.text,strict=False)
+if object['code']==200:
+    print("刷单成功！共"+str(count)+"首")
+    exit()
+else:
+    print("发生错误："+str(object['code'])+object['message'])
     exit(object['code'])
