@@ -63,4 +63,4 @@ else:
     else:
         print("重复签到")
 
-    exit(object['code'])
+    exit
