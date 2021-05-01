@@ -21,7 +21,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: 签到
+    - name: 签到2
       run: |
         pip install -r requirements.txt
         
