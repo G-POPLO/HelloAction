@@ -46,7 +46,7 @@ headers2 = {
         "Cookie":"os=pc; osver=Microsoft-Windows-10-Professional-build-10586-64bit; appver=2.0.3.131777; channel=netease; __remember_me=true;"
         }
 #请求发送结束
-#开始签到
+#开始登陆
 res=s.post(url=url,data=protect(json.dumps(logindata)),headers=headers2)
 tempcookie=res.cookies
 object=json.loads(res.text)
@@ -55,7 +55,9 @@ if object['code']==200:
 else:
     print("登录失败！请检查密码是否正确！"+str(object['code']))
     exit(object['code'])
+#登录结束
 
+#开始签到
 res=s.post(url=url2,data=protect('{"type":0}'),headers=headers)
 object=json.loads(res.text)
 if object['code']!=200 and object['code']!=-2:
@@ -65,6 +67,7 @@ else:
         print("签到成功，经验+"+str(object['point']))
     else:
         print("重复签到")
+#签到结束
 
     exit(object['code'])
 #程序结束
