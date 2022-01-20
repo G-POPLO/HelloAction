@@ -69,5 +69,5 @@ else:
         print("重复签到")
 #签到结束
 
-    exit(object['code'])
+    exit
 #程序结束
